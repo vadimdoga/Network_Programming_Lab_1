@@ -48,9 +48,24 @@ route2 = []
 route3 = []
 route4 = []
 route1.append(routes.pop(0))
+route2.append(routes.pop(0))
+route3.append(routes.pop(0))
+route4.append(routes.pop(0))
 
 for route in route1:
     new_route = getRequest(route, header)
     makeFile(new_route,route.replace("/",""))
     getRoute(new_route, route1)
-print(routes)
+for route in route2:
+    new_route = getRequest(route, header)
+    makeFile(new_route,route.replace("/",""))
+    getRoute(new_route, route2)
+for route in route3:
+    new_route = getRequest(route, header)
+    makeFile(new_route,route.replace("/",""))
+    getRoute(new_route, route3)
+for route in route4:
+    new_route = getRequest(route, header)
+    makeFile(new_route,route.replace("/",""))
+    getRoute(new_route, route4)
+
