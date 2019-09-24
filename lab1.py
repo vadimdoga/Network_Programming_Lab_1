@@ -2,7 +2,6 @@ import requests
 import time
 import json
 import threading
-from concurrent.futures import ThreadPoolExecutor
 from requests.exceptions import HTTPError
 
 
@@ -15,12 +14,12 @@ def getRoute(res_name, route_name):
     route_text = res_name.text
     data = json.loads(route_text)
     if 'link' not in data:
-        print("On route " + res_name + "no link")
+        print("no link")
     else:
         link = data["link"]
         for key, value in link.items():
             route_name.append(value)
-    return route_name
+    return routes
 
 
 def makeFile(file_text, file_name):
@@ -45,7 +44,7 @@ header = {
 # home route
 res_home = getRequest(link, header)
 getRoute(res_home, routes)
-#all routes
+# all routes
 route1 = []
 route2 = []
 route3 = []
@@ -55,22 +54,28 @@ route2.append(routes.pop(0))
 route3.append(routes.pop(0))
 route4.append(routes.pop(0))
 
+
 def route_1():
     for route in route1:
         new_route = getRequest(route, header)
         makeFile(new_route, route.replace("/", ""))
         getRoute(new_route, route1)
-        print(route1)
+
+
 def route_2():
     for route in route2:
         new_route = getRequest(route, header)
         makeFile(new_route, route.replace("/", ""))
-        getRoute(new_route, route2)
+    getRoute(new_route, route2)
+
+
 def route_3():
     for route in route3:
         new_route = getRequest(route, header)
         makeFile(new_route, route.replace("/", ""))
         getRoute(new_route, route3)
+
+
 def route_4():
     for route in route4:
         new_route = getRequest(route, header)
@@ -79,12 +84,24 @@ def route_4():
 
 
 try:
-  start = time.time()  
-  executor = ThreadPoolExecutor(max_workers=2)
-  executor.submit(route_1)
-
+    t1 = threading.Thread(target=route_1)
+    t2 = threading.Thread(target=route_2)
+    t3 = threading.Thread(target=route_3)
+    t4 = threading.Thread(target=route_4)
 except:
-    print("Error")
+    print("ERROR WITH THREADS")
+
+start = time.time()
+t4.start()
+t3.start()
+t2.start()
+t1.start()
+
+t4.join()
+t3.join()
+t2.join()
+t1.join()
+
 end = time.time()
 
 print(f"Done in {end - start}")
