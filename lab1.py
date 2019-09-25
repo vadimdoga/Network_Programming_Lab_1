@@ -2,24 +2,27 @@ import requests
 import time
 import json
 import threading
+import concurrent.futures
 from requests.exceptions import HTTPError
 
 
 def getRequest(route, header):
     name = requests.request("GET", url + route, headers=header)
+
     return name
 
 
 def getRoute(res_name, route_name):
     route_text = res_name.text
     data = json.loads(route_text)
-    if 'link' not in data:
-        print("no link")
-    else:
+    if 'link' in data:
         link = data["link"]
         for key, value in link.items():
             route_name.append(value)
-    return routes
+    else:
+        print("no more links")
+
+    return route_name
 
 
 def makeFile(file_text, file_name):
@@ -27,6 +30,8 @@ def makeFile(file_text, file_name):
     f.write(file_text.text)
     f.close()
 
+
+start = time.time()
 
 url = "http://localhost:5000"
 routes = []
@@ -55,53 +60,18 @@ route3.append(routes.pop(0))
 route4.append(routes.pop(0))
 
 
-def route_1():
-    for route in route1:
+def all_routes(route_list):
+    for route in route_list:
         new_route = getRequest(route, header)
         makeFile(new_route, route.replace("/", ""))
-        getRoute(new_route, route1)
+        getRoute(new_route, route_list)
 
 
-def route_2():
-    for route in route2:
-        new_route = getRequest(route, header)
-        makeFile(new_route, route.replace("/", ""))
-    getRoute(new_route, route2)
-
-
-def route_3():
-    for route in route3:
-        new_route = getRequest(route, header)
-        makeFile(new_route, route.replace("/", ""))
-        getRoute(new_route, route3)
-
-
-def route_4():
-    for route in route4:
-        new_route = getRequest(route, header)
-        makeFile(new_route, route.replace("/", ""))
-        getRoute(new_route, route4)
-
-
-try:
-    t1 = threading.Thread(target=route_1)
-    t2 = threading.Thread(target=route_2)
-    t3 = threading.Thread(target=route_3)
-    t4 = threading.Thread(target=route_4)
-except:
-    print("ERROR WITH THREADS")
-
-start = time.time()
-t4.start()
-t3.start()
-t2.start()
-t1.start()
-
-t4.join()
-t3.join()
-t2.join()
-t1.join()
+with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+    executor.submit(all_routes, route1)
+    executor.submit(all_routes, route2)
+    executor.submit(all_routes, route3)
+    executor.submit(all_routes, route4)
 
 end = time.time()
-
 print(f"Done in {end - start}")
