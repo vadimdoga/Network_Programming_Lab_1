@@ -31,6 +31,7 @@ def makeFile(file_text, file_name):
     f.close()
 
 
+start = time.time()
 
 url = "http://localhost:5000"
 routes = []
@@ -59,90 +60,18 @@ route3.append(routes.pop(0))
 route4.append(routes.pop(0))
 
 
-def route_1():
-    for route in route1:
+def all_routes(route_list):
+    for route in route_list:
         new_route = getRequest(route, header)
         makeFile(new_route, route.replace("/", ""))
-        getRoute(new_route, route1)
-def route_2():
-    for route in route2:
-        new_route = getRequest(route, header)
-        makeFile(new_route, route.replace("/", ""))
-        getRoute(new_route, route2)
-def route_3():
-    links = []
-    for route in route3:
-        new_route = getRequest(route, header)
-        makeFile(new_route, route.replace("/", ""))
-        getRoute(new_route, links)
-    link31 = []
-    link32 = []
-    link33 = []
-    link31.append(links.pop(0))
-    link32.append(links.pop(0))
-    link33.append(links.pop(0))
-    def link_31():
-        for route in link31:
-            new_route = getRequest(route, header)
-            makeFile(new_route, route.replace("/", ""))
-            getRoute(new_route, link31)
-    def link_32():
-        for route in link32:
-            new_route = getRequest(route, header)
-            makeFile(new_route, route.replace("/", ""))
-            getRoute(new_route, link32)
-    def link_33():
-        for route in link33:
-            new_route = getRequest(route, header)
-            makeFile(new_route, route.replace("/", ""))
-            getRoute(new_route, links)
-        link331 = []
-        link332 = []
-        link331.append(links.pop(0))
-        link332.append(links.pop(0))
-        def link_331():
-            for route in link331:
-                new_route = getRequest(route, header)
-                makeFile(new_route, route.replace("/", ""))
-                getRoute(new_route, link331)
-        def link_332():
-            for route in link332:
-                new_route = getRequest(route, header)
-                makeFile(new_route, route.replace("/", ""))
-                getRoute(new_route, link332)
-        executor331 = threading.Thread(target=link_331)
-        executor332 = threading.Thread(target=link_332)
+        getRoute(new_route, route_list)
 
-        executor331.start()
-        executor332.start()
 
-        executor331.join()
-        executor332.join()
-    executor33 = threading.Thread(target=link_33)
-    executor32 = threading.Thread(target=link_32)
-    executor31 = threading.Thread(target=link_31)
-
-    executor33.start()
-    executor31.start()
-    executor32.start()
-
-    executor31.join()
-    executor32.join()
-    executor33.join()
-def route_4():
-    for route in route4:
-        new_route = getRequest(route, header)
-        makeFile(new_route, route.replace("/", ""))
-        getRoute(new_route, route4)
-
-start = time.time()
 with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-    executor.submit(route_3)
-    executor.submit(route_1)
-    executor.submit(route_2)
-    executor.submit(route_4)
+    executor.submit(all_routes, route1)
+    executor.submit(all_routes, route2)
+    executor.submit(all_routes, route3)
+    executor.submit(all_routes, route4)
 
 end = time.time()
 print(f"Done in {end - start}")
-
-
