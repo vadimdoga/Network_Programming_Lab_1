@@ -14,8 +14,6 @@ def xml_to_json(data):
     ab = Abdera(dict_type=OrderedDict)
     converted_json = json.dumps(ab.data(fromstring(data)))
     return converted_json
-
-
 def csv_to_json(data):
     f = open("file.csv","w")
     f.write(data)
@@ -191,7 +189,7 @@ def route_4():
 
 
 start = time.time()
-with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
     executor.submit(route_3)
     executor.submit(route_1)
     executor.submit(route_2)
