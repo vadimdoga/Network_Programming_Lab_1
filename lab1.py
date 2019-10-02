@@ -12,7 +12,7 @@ from xmljson import Abdera
 from xml.etree.ElementTree import fromstring
 from collections import OrderedDict
 
-#declare counter
+#define a counter 
 counter = 2
 
 def xml_to_json(data):
@@ -51,6 +51,7 @@ def getRoute(res_name):
         print("No more links in " + res_name)
     return routes
 
+
 def makeFile(file_text):
     file_json = file_text.text
     data = json.loads(file_json)
@@ -67,12 +68,6 @@ def makeFile(file_text):
         else:
             json_result = all_data
 
-        f = open("file.json", "a")
-        f.write(json_result + ",")
-        f.write(os.linesep)
-        f.close()
-    else:
-        print("No data in file")
 
 f = open("file.json","w")
 f.write("[")
