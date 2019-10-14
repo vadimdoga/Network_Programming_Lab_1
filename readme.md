@@ -75,7 +75,7 @@ def get_route(res_name):
     return routes
 ```
 ### 8. Access token has a timeout of 20 seconds, and you are not allowed to get another token every time you access different route. So, one register per program run
-
+![time](https://user-images.githubusercontent.com/43139007/66743464-a1400f80-ee82-11e9-9d57-61150eeb8d90.png)
 
 ### 9. Once you fetch all the data, convert it to a common representation, doesn't matter what this representation is
 After fetching I convert all data to JSON format using libraries. When a request is made it goes further to a function that gets the 'links' and after that it goes to convert_to_json function. It extracts the 'mime_type' which has info about the type of data and then uses it to access function of type converting.
@@ -101,13 +101,15 @@ def convert_to_json(file_text):
         json_data.append(json_element)
 ```
 ### 10. The final part of the lab is to make a concurrent TCP server, serving the fetched content, that will respond to (mandatory) a column selector message, like `SelectColumn column_name`, and (optional) `SelectFromColumn column_name glob_pattern`
-
+![find id](https://user-images.githubusercontent.com/43139007/66743465-a1d8a600-ee82-11e9-964b-17cb44852a34.png)
+![find id 3](https://user-images.githubusercontent.com/43139007/66743466-a1d8a600-ee82-11e9-8721-7016ee6fbb48.png)
 ### Optional tasks:
 1.Using a limited number of threads for fetching data
 ```
 with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
 ```
 2.`SelectFromColumn column_name glob_pattern` message for TCP server
+![find id 3](https://user-images.githubusercontent.com/43139007/66743466-a1d8a600-ee82-11e9-8721-7016ee6fbb48.png)
 
 ## Built With
 
